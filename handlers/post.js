@@ -1,8 +1,8 @@
-let models = require("../core/db");
+let Post = require("../core/db").Post;
+let Comment = require("../core/db").Comment;
 
 class PostManager {
   singlePost(req, res) {
-    let Post = models.Post;
     try {
       const _id = models.getObjectId(req.params.id);
       Post.findOne({ _id: _id }, (err, result) => {
@@ -17,7 +17,6 @@ class PostManager {
   }
 
   allPost(req, res) {
-    let Post = models.Post;
     try {
       Post.find({}, (err, result) => {
         if (err) {
@@ -29,6 +28,14 @@ class PostManager {
       res.send(error);
     }
   }
+
+  createPost(req, res) {
+    try {
+      Post.insertOne({});
+    } catch (err) {}
+  }
+
+  addCommentOnPost(req, res) {}
 }
 
 module.exports = new PostManager();

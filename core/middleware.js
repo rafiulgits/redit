@@ -1,5 +1,6 @@
 let jwt = require("jsonwebtoken");
 const config = require("./config");
+let User = require("./db").User;
 
 let checkToken = (req, res, next) => {
   let token = req.headers["x-access-token"] || req.headers["authorization"];
@@ -12,10 +13,9 @@ let checkToken = (req, res, next) => {
             authication: "failed",
             message: "invalid token"
           });
-        } else {
-          req.decoded = decoded;
-          next();
         }
+        req.decoded = decoded;
+        getUser(req, res, next);
       });
     } else {
       return res.send({
@@ -29,11 +29,26 @@ let checkToken = (req, res, next) => {
   }
 };
 
-let generateAuthToken = username => {
-  let token = jwt.sign({ username: username }, config.SECRET_KEY, {
+let generateAuthToken = email => {
+  let token = jwt.sign({ email: email }, config.SECRET_KEY, {
     expiresIn: "24h"
   });
   return token;
+};
+
+let getUser = (req, res, next) => {
+  try {
+    User.findOne({ email: req.decoded.email }, (err, result) => {
+      if (result !== null) {
+        req.user = result;
+        next();
+      } else {
+        res.send({ message: "user loaded failed" });
+      }
+    });
+  } catch (err) {
+    res.send({ message: "user load failed" });
+  }
 };
 
 module.exports = {

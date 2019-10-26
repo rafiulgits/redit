@@ -1,7 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 var ObjectId = require("mongodb").ObjectID;
 
-var DB = function () {
+var DB = function() {
   const DB_URL = "mongodb://localhost:27017";
   const DB_NAME = "moc";
 
@@ -55,7 +55,7 @@ class Model {
       .toArray(listener);
   }
 
-  async insert(obj, listener) {
+  async insertOne(obj, listener) {
     let db = await this.DB.Reference();
     db.collection(this.collection).insert(obj, listener);
   }
@@ -66,16 +66,43 @@ class Model {
   }
 }
 
-
 class User extends Model {
   //
   // name
   // email
   // password
-  // gender
   //
   constructor() {
     super("user");
+  }
+
+  create(data, listener) {
+    try {
+      this.findOne({ email: data.email }, (err, result) => {
+        if (result !== null) {
+          listener({ message: "email already registered" });
+          return;
+        }
+        this.insertOne(
+          {
+            name: data.name,
+            email: data.email,
+            password: data.password
+          },
+          listener
+        );
+      });
+    } catch (err) {
+      listener(err, null);
+    }
+  }
+
+  authenticate(data, listener) {
+    try {
+      this.findOne({ email: data.email, password: data.password }, listener);
+    } catch (err) {
+      listener(err, null);
+    }
   }
 }
 
@@ -98,7 +125,7 @@ class Post extends Model {
   // time
   // date
   // user
-  // comments[top 10]
+  // comments[]
   //
   constructor() {
     super("post");
