@@ -64,6 +64,11 @@ class Model {
     let db = await this.DB.Reference();
     db.collection(this.collection).insertMany(arr, listener);
   }
+
+  async updateOne(query, obj, listener) {
+    let db = await this.DB.Reference();
+    db.collection(this.collection).updateOne(query, obj, listener);
+  }
 }
 
 class User extends Model {
@@ -121,7 +126,7 @@ class Comment extends Model {
 class Post extends Model {
   //
   // title
-  // description
+  // body
   // time
   // date
   // user
@@ -129,6 +134,55 @@ class Post extends Model {
   //
   constructor() {
     super("post");
+  }
+
+  create(data, listener) {
+    try {
+      this.insertOne(
+        {
+          title: data.title,
+          body: data.body,
+          time: data.time,
+          date: data.date,
+          user: data.user,
+          comments: []
+        },
+        listener
+      );
+    } catch (err) {
+      listener(err, null);
+    }
+  }
+
+  addComent(id, data, listener) {
+    try {
+      let query = {
+        _id: new ObjectId(id)
+      };
+      new Comment().insertOne(
+        {
+          body: data.body,
+          user: data.user,
+          time: data.time,
+          date: data.date
+        },
+        (err, result) => {
+          if (err) {
+            listener(err, null);
+            return;
+          }
+          this.updateOne(
+            query,
+            {
+              $push: { comments: result.ops[0] }
+            },
+            listener
+          );
+        }
+      );
+    } catch (err) {
+      listener(err, null);
+    }
   }
 }
 
