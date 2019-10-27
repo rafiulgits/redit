@@ -1,5 +1,5 @@
-let generateAuthToken = require("../core/middleware").generateAuthToken;
-let User = require("../core/db").User;
+let generateAuthToken = require("../../core/middleware").generateAuthToken;
+let User = require("../../core/db").User;
 
 class AccountManager {
   signup(req, res) {

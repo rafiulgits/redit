@@ -1,5 +1,5 @@
-let Post = require("../core/db").Post;
-let getObjectId = require("../core/db").getObjectId;
+let Post = require("../../core/db").Post;
+let getObjectId = require("../../core/db").getObjectId;
 
 class PostManager {
   singlePost(req, res) {

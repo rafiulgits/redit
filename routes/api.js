@@ -2,8 +2,8 @@ let express = require("express");
 let router = express.Router();
 let middleware = require("../core/middleware");
 
-let AccountManager = require("../handlers/account");
-let PostManager = require("../handlers/post");
+let AccountManager = require("../handlers/api/account");
+let PostManager = require("../handlers/api/post");
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
