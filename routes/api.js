@@ -12,7 +12,7 @@ router.post("/login", AccountManager.login);
 router.post("/signup", AccountManager.signup);
 
 router.post("/post/create", middleware.checkToken, PostManager.createPost);
-router.get("/post/all", middleware.checkToken, PostManager.allPost);
+router.get("/post/all", PostManager.allPost);
 router.get("/post/:id", middleware.checkToken, PostManager.singlePost);
 router.post(
   "/post/:id/comment/",
