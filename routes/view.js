@@ -7,5 +7,6 @@ let AccountManager = require("../handlers/views/account");
 
 router.get("", IndexManager.home);
 router.get("/login", AccountManager.login);
+router.get("/signup", AccountManager.signup);
 
 module.exports = router;
