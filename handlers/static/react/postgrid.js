@@ -1,15 +1,20 @@
 const Card = props => {
   return (
-    <div className="card text-center">
+    <div className="card text-center bg-danger">
       <div className="card-body">
-        <h5 className="card-title">{props.data.title}</h5>
-        <p className="card-text">{props.data.body}</p>
+        <h5 className="card-title">
+          <a className="text-white" href={`/post/${props.data._id}`}>
+            {props.data.title}
+          </a>
+        </h5>
         <p className="card-text">
-          <small className="text-muted">{`${props.data.time} ${props.data.date}`}</small>
+          <small className="text-white">{`${props.data.time} ${props.data.date}`}</small>
         </p>
         <p className="card-text">
           <small className="text-muted">
-            <cite title="Source Title">{props.data.user.name}</cite>
+            <cite title="Source Title" className="text-white">
+              {props.data.user.name}
+            </cite>
           </small>
         </p>
       </div>
@@ -47,7 +52,7 @@ class View extends React.Component {
 
   getPostsGrid() {
     return (
-      <div className="card-columns">
+      <div className="card-columns ml-3 mr-3">
         {this.state.postSet.map((item, index) => (
           <Card key={index} data={item} />
         ))}

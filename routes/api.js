@@ -10,10 +10,11 @@ router.use(express.json());
 
 router.post("/login", AccountManager.login);
 router.post("/signup", AccountManager.signup);
+router.get("/profile", middleware.checkToken, AccountManager.profile);
 
 router.post("/post/create", middleware.checkToken, PostManager.createPost);
 router.get("/post/all", PostManager.allPost);
-router.get("/post/:id", middleware.checkToken, PostManager.singlePost);
+router.get("/post/:id", PostManager.singlePost);
 router.post(
   "/post/:id/comment/",
   middleware.checkToken,

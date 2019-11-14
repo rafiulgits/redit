@@ -50,9 +50,7 @@ class Model {
 
   async find(query, listener) {
     let db = await this.DB.Reference();
-    db.collection(this.collection)
-      .find(query)
-      .toArray(listener);
+    db.collection(this.collection).find(query).toArray(listener);
   }
 
   async insertOne(obj, listener) {
