@@ -42,6 +42,25 @@ class AccountManager {
       });
     });
   }
+
+  update(req, res) {
+    try {
+      let newName = req.body.name;
+      User.updateOne(
+        { email: req.user.email },
+        { $set: { name: newName } },
+        (err, result) => {
+          if (err) {
+            res.status(400).send(err);
+            return;
+          }
+          res.send(result);
+        }
+      );
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
 }
 
 module.exports = new AccountManager();

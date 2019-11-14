@@ -104,8 +104,42 @@ class Profile extends React.Component {
     }
   }
 
+  updateProfile(token, data) {
+    try {
+      fetch("http://localhost:3000/api/profile/update", {
+        method: "post",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }).then(res => {
+        if (!res.ok) {
+          alert("user is not valid");
+          return;
+        } else {
+          res = res.json().then(data => {
+            window.location.reload();
+          });
+        }
+      });
+    } catch (err) {
+      alert("something went wrong");
+    }
+  }
+
   handleUpdate(event) {
     event.preventDefault();
+    let token = localStorage.getItem("token");
+    if (!token) {
+      alert("user is not authenticated");
+      return;
+    }
+    let data = {
+      name: this.state.inputName
+    };
+    this.setState({ inputName: null });
+    this.updateProfile(token, data);
   }
 
   profileView() {

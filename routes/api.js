@@ -11,6 +11,7 @@ router.use(express.json());
 router.post("/login", AccountManager.login);
 router.post("/signup", AccountManager.signup);
 router.get("/profile", middleware.checkToken, AccountManager.profile);
+router.post("/profile/update", middleware.checkToken, AccountManager.update);
 
 router.post("/post/create", middleware.checkToken, PostManager.createPost);
 router.get("/post/all", PostManager.allPost);
