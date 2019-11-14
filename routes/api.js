@@ -20,5 +20,6 @@ router.post(
   middleware.checkToken,
   PostManager.addCommentOnPost
 );
+router.get("/post/:id/delete", middleware.checkToken, PostManager.deletePost);
 
 module.exports = router;

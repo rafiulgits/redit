@@ -50,7 +50,9 @@ class Model {
 
   async find(query, listener) {
     let db = await this.DB.Reference();
-    db.collection(this.collection).find(query).toArray(listener);
+    db.collection(this.collection)
+      .find(query)
+      .toArray(listener);
   }
 
   async insertOne(obj, listener) {
@@ -66,6 +68,16 @@ class Model {
   async updateOne(query, obj, listener) {
     let db = await this.DB.Reference();
     db.collection(this.collection).updateOne(query, obj, listener);
+  }
+
+  async deleteOne(query, listener) {
+    let db = await this.DB.Reference();
+    db.collection(this.collection).deleteOne(query, listener);
+  }
+
+  async deleteMany(query, listener) {
+    let db = await this.DB.Reference();
+    db.collection(this.collection).deleteMany(query, listener);
   }
 }
 

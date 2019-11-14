@@ -57,6 +57,31 @@ class PostManager {
       res.send(result.result);
     });
   }
+
+  deletePost(req, res) {
+    try {
+      const id = new getObjectId(req.params.id);
+      Post.findOne({ _id: id }, (err, result) => {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        if (!req.user._id.equals(result.user._id)) {
+          res.status(405).send("access denied");
+          return;
+        }
+        Post.deleteOne({ _id: id }, (err, result) => {
+          if (err) {
+            res.status(400).send(err);
+            return;
+          }
+          res.send(result);
+        });
+      });
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
 }
 
 module.exports = new PostManager();
