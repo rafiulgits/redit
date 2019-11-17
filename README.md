@@ -1,5 +1,4 @@
 <center><img src="doc/logo.svg"></center>
-
 ***
 
 #### Setup:
@@ -30,6 +29,22 @@ To run development server with auto restart on update use `nodemon npm start`
 
 
 ![Server Handlers](/doc/server_handler.svg)
+
+
+
+<center>Server Handlers</center>
+
+
+
+
+
+![](/doc/redit_routes.svg)
+
+
+
+
+
+<center>URL Routes (user profile)</center>
 
 
 
