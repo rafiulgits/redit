@@ -4,8 +4,11 @@ class View extends React.Component {
     this.state = {
       id: null,
       isLoading: true,
-      post: null
+      post: null,
+      claps: 0
     };
+
+    this.handleNewClap = this.handleNewClap.bind(this);
   }
 
   componentDidMount() {
@@ -24,8 +27,40 @@ class View extends React.Component {
         .then(res => res.json())
         .then(data => {
           this.setState({
+            id: id,
             isLoading: false,
-            post: data
+            post: data,
+            claps: data.clap ? data.clap : 0
+          });
+        });
+    } catch (err) {
+      console.log(err);
+      alert("something went wrong");
+    }
+  }
+
+  handleNewClap(event) {
+    event.preventDefault();
+    let token = localStorage.getItem("token");
+    if (!token) {
+      alert("You are not authenticated");
+      return;
+    }
+    this.addClapToDB(token);
+  }
+
+  addClapToDB(token) {
+    try {
+      fetch(`http://localhost:3000/api/post/${this.state.id}/clap`, {
+        method: "post",
+        headers: {
+          Authorization: token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState({
+            claps: this.state.claps + 1
           });
         });
     } catch (err) {
@@ -45,6 +80,25 @@ class View extends React.Component {
 
     return (
       <div>
+        <div
+          className="position-fixed"
+          style={{ zIndex: "100", top: "50%", left: "50px" }}
+        >
+          <i
+            onClick={this.handleNewClap}
+            class="fa fa-sign-language"
+            style={{
+              fontSize: "25px",
+              backgroundColor: "rgb(240,240,240)",
+              padding: "10px",
+              borderRadius: "50%",
+              windth: "40px",
+              height: "40px",
+              cursor: "pointer"
+            }}
+          ></i>
+          <p className="lead text-center">{this.state.claps}</p>
+        </div>
         <h4>{this.state.post.title}</h4>
         <small>
           {` ${this.state.post.date} : ${this.state.post.time} - ${this.state.post.user.name}`}

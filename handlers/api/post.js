@@ -82,6 +82,27 @@ class PostManager {
       res.status(400).send(err);
     }
   }
+
+  addClapOnPost(req, res) {
+    try {
+      const id = new getObjectId(req.params.id);
+      Post.findOne({ _id: id }, (err, result) => {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        Post.updateOne({ _id: id }, { $inc: { clap: 1 } }, (err, result) => {
+          if (err) {
+            res.status(400).send(err);
+            return;
+          }
+          res.send(result);
+        });
+      });
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
 }
 
 module.exports = new PostManager();

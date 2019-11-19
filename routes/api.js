@@ -21,6 +21,11 @@ router.post(
   middleware.checkToken,
   PostManager.addCommentOnPost
 );
+router.post(
+  "/post/:id/clap/",
+  middleware.checkToken,
+  PostManager.addClapOnPost
+);
 router.get("/post/:id/delete", middleware.checkToken, PostManager.deletePost);
 
 module.exports = router;

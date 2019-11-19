@@ -154,6 +154,7 @@ class Post extends Model {
           body: data.body,
           time: data.time,
           date: data.date,
+          clap: 0,
           user: data.user,
           comments: []
         },
